@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Киіз үй — AR</title>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; background: #f4efe6; }
+  model-viewer { width: 100%; height: 100%; --poster-color: #f4efe6; }
+  .title { position: absolute; top: 12px; left: 0; right: 0; text-align: center;
+           font-weight: 600; color: #3b2a1a; pointer-events: none; }
+  .btn { position: absolute; border: 0; border-radius: 24px; padding: 12px 20px; font-size: 16px;
+         background: #8c5a2b; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+  #ar-btn { bottom: 24px; left: 50%; transform: translateX(-50%); }
+  #info-btn { top: 48px; right: 12px; padding: 10px 16px; }
+  #panel { position: absolute; left: 12px; right: 12px; bottom: 90px; max-width: 480px; margin: auto;
+           background: rgba(255,255,255,.96); color: #222; border-radius: 14px; padding: 16px;
+           box-shadow: 0 4px 16px rgba(0,0,0,.3); display: none; font-size: 15px; line-height: 1.45; }
+  #panel h3 { margin: 0 0 8px; }
+  #panel .close { float: right; border: 0; background: none; font-size: 22px; }
+  .hint { position: absolute; bottom: 80px; left: 0; right: 0; text-align: center; color: #5a4630; font-size: 14px; pointer-events: none; }
+</style>
+</head>
+<body>
+<model-viewer id="mv" src="model.glb"
+  alt="Қазақтың киіз үйі"
+  ar ar-modes="scene-viewer webxr quick-look"
+  ar-placement="floor" ar-scale="auto"
+  camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1"
+  xr-environment>
+
+  <div class="title">Қазақтың киіз үйі</div>
+  <button slot="ar-button" id="ar-btn" class="btn">📱 AR-да орнату</button>
+  <button id="info-btn" class="btn">ℹ️ Ақпарат</button>
+  <div class="hint">Бір саусақ — айналдыру · Екі саусақ — масштаб / бұру</div>
+
+  <div id="panel">
+    <button class="close" id="close">×</button>
+    <h3>Киіз үй</h3>
+    <p>Киіз үй — қазақтың дәстүрлі көшпелі тұрғыны. Құрамы: керегe (қабырға), уық (төбе сүйектері),
+    шаңырақ (төбедегі дөңгелек арқалық) және киіз жабындысы. Ол жеңіл жиналып, тез тігіледі,
+    қысқа жылы, жазда салқын болады. Шаңырақ — отбасы мен ұрпақ береке-бірлігінің символы.</p>
+  </div>
+</model-viewer>
+
+<script>
+  const panel = document.getElementById('panel');
+  document.getElementById('info-btn').onclick = () =>
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+  document.getElementById('close').onclick = () => panel.style.display = 'none';
+
+  // AR режимінде автоайналуды өшіру
+  const mv = document.getElementById('mv');
+  mv.addEventListener('ar-status', e => {
+    if (e.detail.status === 'session-started') mv.removeAttribute('auto-rotate');
+    if (e.detail.status === 'failed') alert('AR іске қосылмады. Play Market-тен "Google Play Services for AR" және "Google" қолданбаларын орнатыңыз/жаңартыңыз, содан кейін Chrome-да қайта ашыңыз.');
+  });
+</script>
+</body>
+</html>
