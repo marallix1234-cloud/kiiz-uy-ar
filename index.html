@@ -25,7 +25,7 @@
 <body>
 <model-viewer id="mv" src="model.glb"
   alt="Қазақтың киіз үйі"
-  ar ar-modes="webxr scene-viewer quick-look"
+  ar ar-modes="scene-viewer webxr quick-look"
   ar-placement="floor" ar-scale="auto"
   camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1"
   xr-environment>
@@ -54,6 +54,7 @@
   const mv = document.getElementById('mv');
   mv.addEventListener('ar-status', e => {
     if (e.detail.status === 'session-started') mv.removeAttribute('auto-rotate');
+    if (e.detail.status === 'failed') alert('AR іске қосылмады. Play Market-тен "Google Play Services for AR" және "Google" қолданбаларын орнатыңыз/жаңартыңыз, содан кейін Chrome-да қайта ашыңыз.');
   });
 </script>
 </body>
